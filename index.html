@@ -6,20 +6,20 @@
     <title>FP2級 特訓アプリ TEPPEN</title>
     <style>
         :root {
-            --bg-color: #fffaf0;
-            --text-brown: #5a4a42;
-            --main-color: #ffdae0;
-            --accent-color: #ff85a2;
-            --star-yellow: #ffca28;
-            --hachiware-blue: #e0f2ff;
+            --bg-color: #fff5f7;
+            --text-brown: #6b5344;
+            --main-color: #ffe4e8;
+            --accent-color: #ff8e99;
+            --star-yellow: #ffce33;
+            --hachiware-blue: #e8f4fc;
             --card-bg: #ffffff;
         }
         * { box-sizing: border-box; }
         body { 
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; 
+            font-family: 'Hiragino Maru Gothic ProN', 'Rounded M+ 1c', 'Zen Maru Gothic', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; 
             background-color: var(--bg-color); 
-            background-image: radial-gradient(#e6e0d8 1px, transparent 1px);
-            background-size: 15px 15px;
+            background-image: radial-gradient(#fbdce0 2px, transparent 2px);
+            background-size: 18px 18px;
             color: var(--text-brown); 
             margin: 0; 
             display: flex; 
@@ -44,63 +44,115 @@
         #home-screen {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* 上寄せにしてスクロール可能に */
             align-items: center;
             text-align: center;
-            padding: 20px;
+            padding: 20px 10px;
+            overflow-y: auto; /* ボタンが増えてもはみ出さないように */
+            width: 100%;
+        }
+        .home-content {
+            width: 100%;
+            padding-bottom: 20px;
         }
         .app-title {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 900;
             color: var(--accent-color);
-            margin: 0 0 5px 0;
+            margin: 10px 0 5px 0;
             text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(255, 133, 162, 0.3);
             letter-spacing: 2px;
         }
         .app-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             color: #887a73;
-            margin: 0 0 30px 0;
+            margin: 0 auto 20px auto;
             background: #fff;
             padding: 5px 15px;
             border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: inline-block;
         }
+        
+        /* ▼ ボタンのレイアウトを1列に変更 ▼ */
         .field-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr; /* 1列に設定 */
             gap: 12px;
             width: 100%;
+            padding: 0 5px;
         }
         .field-btn {
-            padding: 18px 10px;
+            padding: 12px 15px;
             border-radius: 16px;
             border: none;
-            font-size: 1.1rem;
-            font-weight: bold;
             color: white;
             cursor: pointer;
             box-shadow: 0 4px 0 rgba(0,0,0,0.15);
             transition: transform 0.1s, box-shadow 0.1s;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            gap: 5px;
+            justify-content: space-between;
         }
         .field-btn:active {
             transform: translateY(4px);
             box-shadow: 0 0px 0 rgba(0,0,0,0.15);
         }
-        .icon { font-size: 1.8rem; }
+        .field-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            flex: 1;
+        }
+        .icon { font-size: 1.8rem; margin-bottom: 0;}
+        .field-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            line-height: 1.3;
+        }
         
-        /* テーマカラー */
-        .btn-A { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); color: #2c3e50;}
-        .btn-B { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #5a2a27;}
-        .btn-C { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #6d4c00;}
-        .btn-D { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #114b30;}
-        .btn-E { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: #3b1b60;}
-        .btn-F { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); color: #432b50;}
+        /* ▼ ホーム画面の進捗バー用CSS ▼ */
+        .field-prog-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            min-width: 90px;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+        .home-progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .home-progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #ffffff;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .home-progress-text {
+            font-size: 0.8rem;
+            font-weight: bold;
+            opacity: 0.95;
+            text-align: right;
+            line-height: 1.3;
+        }
+        
+        /* テーマカラー（ちいかわキャラクター風のパステルグラデーション） */
+        .btn-A { background: linear-gradient(135deg, #ffd1d8 0%, #ffedf0 100%); color: #6b5344;}
+        .btn-B { background: linear-gradient(135deg, #cde3fb 0%, #edf6ff 100%); color: #6b5344;}
+        .btn-C { background: linear-gradient(135deg, #ffe28a 0%, #fff6d9 100%); color: #6b5344;}
+        .btn-D { background: linear-gradient(135deg, #d3f0e0 0%, #effaf4 100%); color: #6b5344;}
+        .btn-E { background: linear-gradient(135deg, #e3d4f8 0%, #f4edff 100%); color: #6b5344;}
+        .btn-F { background: linear-gradient(135deg, #ffdac2 0%, #ffefe3 100%); color: #6b5344;}
 
         /* ------------------------
            学習画面
@@ -129,9 +181,9 @@
         
         .mode-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; margin-top: 5px; margin-bottom: 5px; font-weight: bold; align-self: center;}
         .mode-normal { background: var(--main-color); color: var(--text-brown); }
-        .mode-test { background: #ce93d8; color: white; }
-        .mode-review { background: #fff176; color: #856404; }
-        .mode-fav { background: #ffe082; color: #795548; }
+        .mode-test { background: #e3d4f8; color: #6b5344; }
+        .mode-review { background: #fff0b3; color: #6b5344; }
+        .mode-fav { background: #ffd1d8; color: #6b5344; }
         
         .q-header { font-size: 0.85rem; font-weight: bold; color: var(--accent-color); margin-bottom: 5px; }
         
@@ -184,21 +236,78 @@
 </head>
 <body>
 
+<!-- ▼▼ ホーム画面 ▼▼ -->
 <div id="home-screen" class="container">
     <div class="home-content">
         <h1 class="app-title">TEPPEN</h1>
         <p class="app-subtitle">ちょっとでも毎日やる！</p>
+        
         <div class="field-grid">
-            <button class="field-btn btn-A" onclick="selectField('A分野')"><span class="icon">💼</span>A ライフ・倫理</button>
-            <button class="field-btn btn-B" onclick="selectField('B分野')"><span class="icon">🛡️</span>B リスク・保険</button>
-            <button class="field-btn btn-C" onclick="selectField('C分野')"><span class="icon">📈</span>C 金融資産運用</button>
-            <button class="field-btn btn-D" onclick="selectField('D分野')"><span class="icon">💰</span>D タックス</button>
-            <button class="field-btn btn-E" onclick="selectField('E分野')"><span class="icon">🏠</span>E 不動産</button>
-            <button class="field-btn btn-F" onclick="selectField('F分野')"><span class="icon">👨‍👩‍👧</span>F 相続・事業承継</button>
+            <button class="field-btn btn-A" onclick="selectField('A分野')">
+                <div class="field-info">
+                    <span class="icon">💼</span>
+                    <span class="field-title">A ライフプランニング<br>と資金計画</span>
+                </div>
+                <div class="field-prog-wrap">
+                    <div class="home-progress-text" id="home-text-A分野">0% (0/0)</div>
+                    <div class="home-progress-container"><div class="home-progress-bar" id="home-prog-A分野"></div></div>
+                </div>
+            </button>
+            <button class="field-btn btn-B" onclick="selectField('B分野')">
+                <div class="field-info">
+                    <span class="icon">🛡️</span>
+                    <span class="field-title">B リスク管理</span>
+                </div>
+                <div class="field-prog-wrap">
+                    <div class="home-progress-text" id="home-text-B分野">0% (0/0)</div>
+                    <div class="home-progress-container"><div class="home-progress-bar" id="home-prog-B分野"></div></div>
+                </div>
+            </button>
+            <button class="field-btn btn-C" onclick="selectField('C分野')">
+                <div class="field-info">
+                    <span class="icon">📈</span>
+                    <span class="field-title">C 金融資産運用</span>
+                </div>
+                <div class="field-prog-wrap">
+                    <div class="home-progress-text" id="home-text-C分野">0% (0/0)</div>
+                    <div class="home-progress-container"><div class="home-progress-bar" id="home-prog-C分野"></div></div>
+                </div>
+            </button>
+            <button class="field-btn btn-D" onclick="selectField('D分野')">
+                <div class="field-info">
+                    <span class="icon">💰</span>
+                    <span class="field-title">D タックスプランニング</span>
+                </div>
+                <div class="field-prog-wrap">
+                    <div class="home-progress-text" id="home-text-D分野">0% (0/0)</div>
+                    <div class="home-progress-container"><div class="home-progress-bar" id="home-prog-D分野"></div></div>
+                </div>
+            </button>
+            <button class="field-btn btn-E" onclick="selectField('E分野')">
+                <div class="field-info">
+                    <span class="icon">🏠</span>
+                    <span class="field-title">E 不動産</span>
+                </div>
+                <div class="field-prog-wrap">
+                    <div class="home-progress-text" id="home-text-E分野">0% (0/0)</div>
+                    <div class="home-progress-container"><div class="home-progress-bar" id="home-prog-E分野"></div></div>
+                </div>
+            </button>
+            <button class="field-btn btn-F" onclick="selectField('F分野')">
+                <div class="field-info">
+                    <span class="icon">👨‍👩‍👧</span>
+                    <span class="field-title">F 相続・事業承継</span>
+                </div>
+                <div class="field-prog-wrap">
+                    <div class="home-progress-text" id="home-text-F分野">0% (0/0)</div>
+                    <div class="home-progress-container"><div class="home-progress-bar" id="home-prog-F分野"></div></div>
+                </div>
+            </button>
         </div>
     </div>
 </div>
 
+<!-- ▼▼ 学習画面 ▼▼ -->
 <div id="app-screen" class="container" style="display:none;">
     <div class="progress-container"><div id="progress-bar"></div></div>
     <div class="card" id="main-card">
@@ -225,10 +334,18 @@
             <button class="btn-copy" onclick="copyForGemini()">Geminiに聞くテキストをコピー 📋</button>
         </div>
 
+        <!-- テスト結果画面 -->
         <div id="test-result-screen" class="result-overlay">
             <h2 style="color:var(--accent-color); margin-bottom: 10px;">テスト終了！</h2>
             <p id="test-score-text" style="font-size: 1.3rem; margin-bottom: 25px; font-weight: bold;"></p>
             <button class="btn-next" style="width: 80%;" onclick="finishTest()">通常モードに戻る</button>
+        </div>
+
+        <!-- ★ 周回クリアお祝い画面 ★ -->
+        <div id="lap-clear-screen" class="result-overlay">
+            <h2 id="lap-clear-title" style="color:var(--accent-color); margin-bottom: 15px; font-size: 1.8rem; text-shadow: 1px 1px 0px #fff;">🎉 クリア！ 🎉</h2>
+            <p id="lap-clear-text" style="font-size: 1.05rem; margin-bottom: 25px; font-weight: bold; line-height: 1.5;"></p>
+            <button class="btn-next" style="width: 80%; background:#fce38a; color:#d48a00; box-shadow: 0 4px 0 #e5c45b;" onclick="closeLapClear()">次の周へ進む！</button>
         </div>
     </div>
     
@@ -238,6 +355,7 @@
     </div>
 </div>
 
+<!-- ▼▼ メニューモーダル ▼▼ -->
 <div class="modal-overlay" id="menu-modal" onclick="closeMenu()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <div class="modal-title" id="menu-title">学習メニュー</div>
@@ -253,14 +371,10 @@
 
 <script>
 // ==========================================
-// 1. 問題データをここに貼り付けてください
+// 1. 問題データ（プレビュー用に各分野2問ずつ抜粋）
 // ==========================================
-// いただいた [ { "field": "A分野", "items": [...] }, ... ] のデータを、
-// 下の rawData の [ ] の間にそのままペーストしてください。
-const rawData = 
-[
-    // ★★★ ここから下にデータを貼り付け ★★★
-      {
+const rawData = [
+    {
     "field": "A分野",
     "items": [
       {
@@ -6206,10 +6320,7 @@ const rawData =
       }
     ]
   }
-    
-    // ★★★ ここから上にデータを貼り付け ★★★
 ];
-
 
 // ==========================================
 // 2. データをアプリ用にセットアップ
@@ -6228,6 +6339,7 @@ let currentField = "";
 let questions = [];
 
 let currentIdx = 0;
+let currentLap = 1; // 周回数を管理
 let mode = 'normal'; 
 let reviewList = [];
 let favList = [];
@@ -6239,17 +6351,45 @@ let resetClickCount = 0;
 let currentQuestion = null;
 
 const fieldColors = {
-    "A分野": { main: "#c2e9fb", accent: "#4facfe" },
-    "B分野": { main: "#ffdae0", accent: "#ff85a2" },
-    "C分野": { main: "#fce38a", accent: "#f38181" },
-    "D分野": { main: "#a1ffd1", accent: "#1fa2ff" },
-    "E分野": { main: "#e0c3fc", accent: "#8ec5fc" },
-    "F分野": { main: "#fbc2eb", accent: "#a6c1ee" }
+    "A分野": { main: "#ffe0e5", accent: "#ff8e99" }, // ちいかわピンク
+    "B分野": { main: "#e0f0ff", accent: "#6baced" }, // ハチワレブルー
+    "C分野": { main: "#fff0b3", accent: "#f5b700" }, // うさぎイエロー
+    "D分野": { main: "#d6f5e3", accent: "#4ec282" }, // モモンガミント
+    "E分野": { main: "#ebdfff", accent: "#9b72e0" }, // ラッコパープル
+    "F分野": { main: "#ffe5d4", accent: "#ff9955" }  // シーサーオレンジ
+};
+
+// ▼ ホーム画面の進捗バーを更新する関数 ▼
+function updateHomeProgress() {
+    const fields = ["A分野", "B分野", "C分野", "D分野", "E分野", "F分野"];
+    fields.forEach(field => {
+        if (db[field] && db[field].length > 0) {
+            const savedIdx = parseInt(localStorage.getItem(`fp_progress_${field}`)) || 0;
+            const savedLap = parseInt(localStorage.getItem(`fp_lap_${field}`)) || 1;
+            const total = db[field].length;
+            const percent = Math.floor((savedIdx / total) * 100);
+            
+            const bar = document.getElementById(`home-prog-${field}`);
+            const text = document.getElementById(`home-text-${field}`);
+            if (bar && text) {
+                bar.style.width = percent + '%';
+                // 周回数が2以上の場合は「👑 〇周目」を表示（改行して下に表示）
+                const lapText = savedLap > 1 ? `<br>👑${savedLap}周目` : '';
+                text.innerHTML = `${percent}% (${savedIdx}/${total}) ${lapText}`;
+            }
+        }
+    });
+}
+
+// 起動時にホーム画面の進捗を読み込む
+window.onload = () => {
+    updateHomeProgress();
 };
 
 function goHome() {
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('home-screen').style.display = 'flex';
+    updateHomeProgress(); // ホームに戻る時も最新の進捗を反映
 }
 
 function selectField(field) {
@@ -6263,7 +6403,7 @@ function selectField(field) {
     const colors = fieldColors[field] || fieldColors["A分野"];
     document.documentElement.style.setProperty('--main-color', colors.main);
     document.documentElement.style.setProperty('--accent-color', colors.accent);
-    document.getElementById('field-display').innerText = field;
+    
     document.getElementById('menu-title').innerText = `${field} メニュー`;
     
     loadData();
@@ -6282,8 +6422,11 @@ function loadData() {
     favList = JSON.parse(localStorage.getItem(getKey('fav'))) || [];
     memoData = JSON.parse(localStorage.getItem(getKey('memo'))) || {};
     currentIdx = parseInt(localStorage.getItem(getKey('progress'))) || 0;
+    currentLap = parseInt(localStorage.getItem(getKey('lap'))) || 1;
     
-    if(currentIdx >= questions.length) currentIdx = 0;
+    if(currentIdx >= questions.length) {
+        currentIdx = 0;
+    }
     
     reviewList = reviewList.filter(no => questions.some(q => q.no === no));
     favList = favList.filter(no => questions.some(q => q.no === no));
@@ -6295,10 +6438,16 @@ function update() {
     const ansSec = document.getElementById('answer-section');
     const btnGrp = document.getElementById('btn-group');
     const resOverlay = document.getElementById('test-result-screen');
+    const lapOverlay = document.getElementById('lap-clear-screen');
     
     ansSec.style.display = 'none'; 
     btnGrp.style.display = 'flex'; 
     resOverlay.style.display = 'none';
+    lapOverlay.style.display = 'none';
+
+    // フィールド名＋周回数バッジの更新
+    const fieldBadgeText = currentLap > 1 ? `${currentField} (👑${currentLap})` : currentField;
+    document.getElementById('field-display').innerText = fieldBadgeText;
 
     if (mode === 'test') {
         currentQuestion = questions[testIndices[testCurrentIdx]];
@@ -6348,12 +6497,12 @@ function check(userAns) {
     const qNo = currentQuestion.no;
 
     if (isCorrect) {
-        resMsg.innerText = "正解 ✅"; resMsg.style.color = "#ff4d79";
+        resMsg.innerText = "正解 ✅"; resMsg.style.color = "#ff8e99";
         if (mode === 'test') testCorrectCount++;
         if (mode === 'review') reviewList.shift();
-        if (mode === 'fav') favList.shift();
+        if (mode === 'fav') favList.push(favList.shift());
     } else {
-        resMsg.innerText = "不正解 ❌"; resMsg.style.color = "#007bff";
+        resMsg.innerText = "不正解 ❌"; resMsg.style.color = "#6baced";
         if (!reviewList.includes(qNo)) reviewList.push(qNo);
         if (mode === 'review') reviewList.push(reviewList.shift());
         if (mode === 'fav') favList.push(favList.shift());
@@ -6364,6 +6513,19 @@ function check(userAns) {
     document.getElementById('explanation').innerHTML = "<b>正解：" + currentQuestion.answer + "</b><br>" + currentQuestion.explanation;
 }
 
+// ▼ お祝い画面の処理 ▼
+function showLapClear(lap) {
+    const screen = document.getElementById('lap-clear-screen');
+    document.getElementById('lap-clear-title').innerText = `🎉 ${lap - 1}周目 クリア！ 🎉`;
+    document.getElementById('lap-clear-text').innerHTML = `TEPPENに一歩近づきましたね！<br>この調子で${lap}周目も応援しています！`;
+    screen.style.display = 'flex';
+}
+
+function closeLapClear() {
+    document.getElementById('lap-clear-screen').style.display = 'none';
+    update();
+}
+
 function next() {
     if (mode === 'test') { 
         testCurrentIdx++; 
@@ -6371,7 +6533,14 @@ function next() {
     }
     else if (mode === 'normal') { 
         currentIdx++; 
-        if (currentIdx >= questions.length) currentIdx = 0; 
+        // 最後まで解き終わった時の処理
+        if (currentIdx >= questions.length) {
+            currentIdx = 0; 
+            currentLap++; // 周回数をアップ
+            localStorage.setItem(getKey('lap'), currentLap);
+            localStorage.setItem(getKey('progress'), currentIdx); 
+            return showLapClear(currentLap); // お祝い画面を出す
+        }
         localStorage.setItem(getKey('progress'), currentIdx); 
     }
     update();
@@ -6440,6 +6609,7 @@ function resetApp() {
         localStorage.removeItem(getKey('review'));
         localStorage.removeItem(getKey('fav'));
         localStorage.removeItem(getKey('memo'));
+        localStorage.removeItem(getKey('lap')); // 周回数もリセット
         alert(`${currentField} のデータをリセットしました`);
         location.reload(); 
     } 
