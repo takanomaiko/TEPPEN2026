@@ -44,22 +44,25 @@
         #home-screen {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* 上寄せにしてスクロール可能に */
+            justify-content: flex-start;
             align-items: center;
             text-align: center;
             padding: 20px 10px;
-            overflow-y: auto; /* ボタンが増えてもはみ出さないように */
+            overflow-y: auto; 
             width: 100%;
         }
         .home-content {
             width: 100%;
             padding-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .app-title {
             font-size: 3.2rem;
             font-weight: 900;
             color: var(--accent-color);
-            margin: 10px 0 5px 0;
+            margin: 0px 0 5px 0;
             text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(255, 133, 162, 0.3);
             letter-spacing: 2px;
         }
@@ -67,18 +70,65 @@
             font-size: 1.05rem;
             font-weight: bold;
             color: #887a73;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 15px auto;
             background: #fff;
             padding: 5px 15px;
             border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             display: inline-block;
         }
+
+        /* ▼ 継続日数・学習数の表示エリア ▼ */
+        .stats-area {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 0 5px;
+        }
+        .stat-box {
+            flex: 1;
+            background: #fff;
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 2px solid var(--main-color);
+        }
+        .stat-title {
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-brown);
+        }
+        .cal-btn {
+            background: #fff;
+            border: 2px dashed #ffb7c5;
+            color: #ff8e99;
+            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.1s;
+        }
+        .cal-btn:active {
+            background: #fff5f7;
+            transform: scale(0.95);
+        }
         
-        /* ▼ ボタンのレイアウトを1列に変更 ▼ */
+        /* ▼ ボタンのレイアウト（1列） ▼ */
         .field-grid {
             display: grid;
-            grid-template-columns: 1fr; /* 1列に設定 */
+            grid-template-columns: 1fr;
             gap: 12px;
             width: 100%;
             padding: 0 5px;
@@ -232,6 +282,27 @@
         
         .result-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card-bg); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 150; padding: 20px; box-sizing: border-box; border-radius:18px;}
         #copy-toast { display: none; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 20px; font-size: 0.85rem; z-index: 1000; font-weight:bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
+        
+        /* ▼ カレンダーリスト用のCSS ▼ */
+        .cal-list {
+            max-height: 250px;
+            overflow-y: auto;
+            text-align: left;
+            margin-bottom: 10px;
+            padding-right: 5px;
+        }
+        .cal-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 5px;
+            border-bottom: 1px dashed #eee;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--text-brown);
+        }
+        .cal-item span {
+            color: var(--accent-color);
+        }
     </style>
 </head>
 <body>
@@ -242,6 +313,20 @@
         <h1 class="app-title">TEPPEN</h1>
         <p class="app-subtitle">ちょっとでも毎日やる！</p>
         
+        <!-- ▼ 新設：学習ステータスエリア ▼ -->
+        <div class="stats-area">
+            <div class="stat-box">
+                <div class="stat-title">🔥 連続学習</div>
+                <div class="stat-value" id="streak-count">0 <span style="font-size:0.8rem">日目</span></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-title">✏️ 今日解いた数</div>
+                <div class="stat-value" id="today-count">0 <span style="font-size:0.8rem">問</span></div>
+            </div>
+        </div>
+        
+        <button class="cal-btn" onclick="openCalendar()">📅 学習記録を見る</button>
+
         <div class="field-grid">
             <button class="field-btn btn-A" onclick="selectField('A分野')">
                 <div class="field-info">
@@ -345,7 +430,7 @@
         <div id="lap-clear-screen" class="result-overlay">
             <h2 id="lap-clear-title" style="color:var(--accent-color); margin-bottom: 15px; font-size: 1.8rem; text-shadow: 1px 1px 0px #fff;">🎉 クリア！ 🎉</h2>
             <p id="lap-clear-text" style="font-size: 1.05rem; margin-bottom: 25px; font-weight: bold; line-height: 1.5;"></p>
-            <button class="btn-next" style="width: 80%; background:#fce38a; color:#d48a00; box-shadow: 0 4px 0 #e5c45b;" onclick="closeLapClear()">次の周へ進む！</button>
+            <button class="btn-next" style="width: 80%; background:#fff0b3; color:#d48a00; box-shadow: 0 4px 0 #e5c45b;" onclick="closeLapClear()">次の周へ進む！</button>
         </div>
     </div>
     
@@ -367,14 +452,26 @@
         <button class="modal-btn" style="background:#eee; color:#333; margin-top:5px;" onclick="closeMenu()">閉じる</button>
     </div>
 </div>
+
+<!-- ▼▼ 学習記録（カレンダー）モーダル ▼▼ -->
+<div class="modal-overlay" id="cal-modal" onclick="closeCalendar()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-title" style="color:var(--accent-color);">📅 最近のがんばり</div>
+        <div id="cal-list" class="cal-list">
+            <!-- ここに直近14日間の記録がJavaScriptで生成されます -->
+        </div>
+        <button class="modal-btn" style="background:#eee; color:#333; margin-top:15px;" onclick="closeCalendar()">閉じる</button>
+    </div>
+</div>
+
 <div id="copy-toast">コピーしました！</div>
 
 <script>
 // ==========================================
-// 1. 問題データ（プレビュー用に各分野2問ずつ抜粋）
+// 1. 問題データ
 // ==========================================
 const rawData = [
-    {
+  {
     "field": "A分野",
     "items": [
       {
@@ -6339,7 +6436,7 @@ let currentField = "";
 let questions = [];
 
 let currentIdx = 0;
-let currentLap = 1; // 周回数を管理
+let currentLap = 1; 
 let mode = 'normal'; 
 let reviewList = [];
 let favList = [];
@@ -6358,6 +6455,72 @@ const fieldColors = {
     "E分野": { main: "#ebdfff", accent: "#9b72e0" }, // ラッコパープル
     "F分野": { main: "#ffe5d4", accent: "#ff9955" }  // シーサーオレンジ
 };
+
+// ▼ 日付の取得関数 ▼
+function getTodayStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ▼ 日々の学習記録・ストリークを更新する関数 ▼
+function incrementDailyCount() {
+    const today = getTodayStr();
+    let stats = JSON.parse(localStorage.getItem('fp_teppen_daily_stats')) || {};
+    let streak = parseInt(localStorage.getItem('fp_teppen_streak')) || 0;
+    let lastDate = localStorage.getItem('fp_teppen_last_date');
+
+    // 今日の解いた数を+1
+    if (!stats[today]) stats[today] = 0;
+    stats[today]++;
+    
+    // ストリーク（連続日数）の計算
+    if (lastDate !== today) {
+        if (lastDate) {
+            const last = new Date(lastDate);
+            const now = new Date(today);
+            const diffTime = now.getTime() - last.getTime();
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); 
+            
+            if (diffDays === 1) {
+                streak++; // 昨日から続いている
+            } else if (diffDays > 1) {
+                streak = 1; // 途切れたら1から再スタート
+            }
+        } else {
+            streak = 1; // 初回
+        }
+        localStorage.setItem('fp_teppen_last_date', today);
+        localStorage.setItem('fp_teppen_streak', streak);
+    }
+    
+    localStorage.setItem('fp_teppen_daily_stats', JSON.stringify(stats));
+    updateHomeStats();
+}
+
+// ▼ ホーム画面の数値を表示する関数 ▼
+function updateHomeStats() {
+    const today = getTodayStr();
+    let stats = JSON.parse(localStorage.getItem('fp_teppen_daily_stats')) || {};
+    let streak = parseInt(localStorage.getItem('fp_teppen_streak')) || 0;
+    let lastDate = localStorage.getItem('fp_teppen_last_date');
+
+    // もし前回解いたのが「一昨日以前」で、まだ今日1問も解いていなければ、画面上のストリークは「0(途切れている)」と表示する
+    if (lastDate && lastDate !== today) {
+        const last = new Date(lastDate);
+        const now = new Date(today);
+        const diffTime = now.getTime() - last.getTime();
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)); 
+        if (diffDays > 1) {
+            streak = 0; 
+        }
+    }
+
+    const todayCount = stats[today] || 0;
+    
+    document.getElementById('streak-count').innerHTML = `${streak} <span style="font-size:0.8rem">日目</span>`;
+    document.getElementById('today-count').innerHTML = `${todayCount} <span style="font-size:0.8rem">問</span>`;
+    updateHomeProgress();
+}
 
 // ▼ ホーム画面の進捗バーを更新する関数 ▼
 function updateHomeProgress() {
@@ -6381,15 +6544,54 @@ function updateHomeProgress() {
     });
 }
 
+// ▼ 学習記録（カレンダー）を開く処理 ▼
+function openCalendar() {
+    const listDiv = document.getElementById('cal-list');
+    listDiv.innerHTML = "";
+    let stats = JSON.parse(localStorage.getItem('fp_teppen_daily_stats')) || {};
+    
+    // 過去14日分（2週間分）の記録を作成
+    for (let i = 0; i < 14; i++) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        const displayDate = `${d.getMonth()+1}月${d.getDate()}日`;
+        
+        const count = stats[dateStr] || 0;
+        
+        const item = document.createElement('div');
+        item.className = 'cal-item';
+        
+        // 解いた数に応じてアイコンを成長させる🌱🌿🌸
+        let icon = "😴";
+        if(count > 0 && count < 10) icon = "🌱";
+        else if (count >= 10 && count < 30) icon = "🌿";
+        else if (count >= 30) icon = "🌸";
+        
+        let displayDateStr = "";
+        if (i === 0) displayDateStr = `今日 (${displayDate})`;
+        else if (i === 1) displayDateStr = `昨日 (${displayDate})`;
+        else displayDateStr = displayDate;
+
+        item.innerHTML = `<div>${icon} ${displayDateStr}</div> <span>${count} 問</span>`;
+        listDiv.appendChild(item);
+    }
+    document.getElementById('cal-modal').style.display = 'flex';
+}
+function closeCalendar() {
+    document.getElementById('cal-modal').style.display = 'none';
+}
+
+
 // 起動時にホーム画面の進捗を読み込む
 window.onload = () => {
-    updateHomeProgress();
+    updateHomeStats();
 };
 
 function goHome() {
     document.getElementById('app-screen').style.display = 'none';
     document.getElementById('home-screen').style.display = 'flex';
-    updateHomeProgress(); // ホームに戻る時も最新の進捗を反映
+    updateHomeStats(); 
 }
 
 function selectField(field) {
@@ -6488,6 +6690,9 @@ function check(userAns) {
     document.getElementById('btn-group').style.display = 'none';
     document.getElementById('answer-section').style.display = 'flex';
 
+    // 解いた数を記録！
+    incrementDailyCount();
+
     const isMaru = (val) => ['○', '⚪︎', '⚪', '〇'].includes(val);
     const isBatsu = (val) => ['×', 'x', 'X', '✕', '✖'].includes(val);
     const isCorrect = (isMaru(userAns) && isMaru(currentQuestion.answer)) || 
@@ -6500,6 +6705,7 @@ function check(userAns) {
         resMsg.innerText = "正解 ✅"; resMsg.style.color = "#ff8e99";
         if (mode === 'test') testCorrectCount++;
         if (mode === 'review') reviewList.shift();
+        // ★お気に入りは正解しても消さずに最後尾へ
         if (mode === 'fav') favList.push(favList.shift());
     } else {
         resMsg.innerText = "不正解 ❌"; resMsg.style.color = "#6baced";
