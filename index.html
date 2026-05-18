@@ -47,50 +47,46 @@
             justify-content: flex-start;
             align-items: center;
             text-align: center;
-            padding: 20px 10px;
+            padding: 15px 10px 5px 10px; /* 上下の余白を調整 */
             overflow-y: auto; 
             width: 100%;
         }
         .home-content {
             width: 100%;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         .app-title {
-            font-size: 3.2rem;
+            font-size: 2.6rem; /* 少し小さく */
             font-weight: 900;
             color: var(--accent-color);
-            margin: 0px 0 5px 0;
+            margin: 0px 0 2px 0;
             text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(255, 133, 162, 0.3);
             letter-spacing: 2px;
         }
         .app-subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem; 
             font-weight: bold;
-            color: #887a73;
+            color: var(--text-brown);
             margin: 0 auto 15px auto;
-            background: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: inline-block;
+            text-shadow: 1px 1px 0px #fff;
         }
 
         /* ▼ 継続日数・学習数の表示エリア ▼ */
         .stats-area {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 10px; /* 隙間を詰める */
+            margin-bottom: 10px; /* 余白を詰める */
             width: 100%;
             padding: 0 5px;
         }
         .stat-box {
             flex: 1;
             background: #fff;
-            border-radius: 16px;
-            padding: 10px;
+            border-radius: 12px; /* 少し角を小さく */
+            padding: 8px; /* 余白を詰める */
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             border: 2px solid var(--main-color);
         }
@@ -101,7 +97,7 @@
             margin-bottom: 2px;
         }
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem; /* 少し小さく */
             font-weight: 900;
             color: var(--text-brown);
         }
@@ -110,11 +106,11 @@
             border: 2px dashed #ffb7c5;
             color: #ff8e99;
             font-weight: bold;
-            padding: 8px 20px;
+            padding: 6px 15px; /* 余白を詰める */
             border-radius: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* 余白を詰める */
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* 少し小さく */
             display: inline-flex;
             align-items: center;
             gap: 5px;
@@ -129,13 +125,13 @@
         .field-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 8px; /* ボタン同士の隙間を詰める */
             width: 100%;
             padding: 0 5px;
         }
         .field-btn {
-            padding: 12px 15px;
-            border-radius: 16px;
+            padding: 10px 12px; /* ボタン内の余白を詰める */
+            border-radius: 14px;
             border: none;
             color: white;
             cursor: pointer;
@@ -153,13 +149,13 @@
         .field-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             text-align: left;
             flex: 1;
         }
-        .icon { font-size: 1.8rem; margin-bottom: 0;}
+        .icon { font-size: 1.5rem; margin-bottom: 0;} /* 少し小さく */
         .field-title {
-            font-size: 1.05rem;
+            font-size: 0.95rem; /* 少し小さく */
             font-weight: bold;
             line-height: 1.3;
         }
@@ -175,21 +171,21 @@
         }
         .home-progress-container {
             width: 100%;
-            height: 8px;
+            height: 6px; /* 少し細く */
             background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 4px;
-            margin-top: 5px;
+            border-radius: 3px;
+            margin-top: 3px; /* 余白を詰める */
             overflow: hidden;
         }
         .home-progress-bar {
             height: 100%;
             width: 0%;
             background-color: #ffffff;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: width 0.5s ease;
         }
         .home-progress-text {
-            font-size: 0.8rem;
+            font-size: 0.75rem; /* 少し小さく */
             font-weight: bold;
             opacity: 0.95;
             text-align: right;
@@ -311,7 +307,7 @@
 <div id="home-screen" class="container">
     <div class="home-content">
         <h1 class="app-title">TEPPEN</h1>
-        <p class="app-subtitle">ちょっとでも毎日やる！</p>
+        <p class="app-subtitle">ちょっとでも毎日やる！🔥</p>
         
         <!-- ▼ 新設：学習ステータスエリア ▼ -->
         <div class="stats-area">
@@ -471,7 +467,7 @@
 // 1. 問題データ
 // ==========================================
 const rawData = [
-  {
+    {
     "field": "A分野",
     "items": [
       {
